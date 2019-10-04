@@ -37,6 +37,7 @@ class _DessertViewState extends State<DessertView> {
                     if (this.action_icon.icon == Icons.search) {
                       this.action_icon = new Icon(Icons.close);
                       this.app_bar_title = new TextField(
+                        key: Key('search_key'),
                         style: new TextStyle(
                           color: Colors.white,
                         ),

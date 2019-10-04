@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:recipe/end_point.dart';
 import 'package:recipe/modules/controllers/detail_controller.dart';
 import 'package:recipe/modules/controllers/search_controller.dart';
-import 'package:recipe/modules/models/seafood_model.dart';
-import 'package:recipe/modules/api/seafood_api.dart';
-
+import 'package:recipe/modules/models/search_model.dart';
 import 'package:recipe/config.dart';
 
-class SeafoodView extends StatefulWidget {
-  final List<SeafoodModel> seafood;
+class SearchView extends StatefulWidget {
+  final List<SearchModel> dessert;
 
-  SeafoodView(this.seafood, {Key key});
+  SearchView(this.dessert, {Key key});
 
   @override
-  _SeafoodViewState createState() => _SeafoodViewState();
+  _SearchViewState createState() => _SearchViewState();
 }
 
-class _SeafoodViewState extends State<SeafoodView> {
+class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
   }
 
-  Widget app_bar_title = new Text(Config.app_string + ' Seafood');
+  Widget app_bar_title = new Text(Config.app_string + ' Search');
   Icon action_icon = new Icon(Icons.search);
   final t_f_search = TextEditingController();
 
@@ -47,7 +42,7 @@ class _SeafoodViewState extends State<SeafoodView> {
                         ),
                         decoration: new InputDecoration(
                             prefixIcon:
-                            new Icon(Icons.search, color: Colors.white),
+                                new Icon(Icons.search, color: Colors.white),
                             hintText: "Search...",
                             hintStyle: new TextStyle(color: Colors.white)),
                         onEditingComplete: () {
@@ -55,14 +50,14 @@ class _SeafoodViewState extends State<SeafoodView> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SearchController(
-                                    query: t_f_search.text
+                                  query: t_f_search.text
                                 )),
                           );
                         },
                       );
                     } else {
                       this.action_icon = new Icon(Icons.search);
-                      this.app_bar_title = new Text(Config.app_string + ' Seafood');
+                      this.app_bar_title = new Text(Config.app_string + ' Search');
                     }
                   });
                 },
@@ -74,30 +69,30 @@ class _SeafoodViewState extends State<SeafoodView> {
   body() {
     return Container(
       child: GridView.builder(
-          itemCount: widget.seafood.length == null ? 0 : widget.seafood.length,
+          itemCount: widget.dessert.length == null ? 0 : widget.dessert.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
           itemBuilder: (BuildContext context, int index) {
             return Hero(
-                tag: 'image' + '${widget.seafood[index].idMeal}',
+                tag: 'image' + '${widget.dessert[index].idMeal}',
                 child: Card(
                   color: Colors.blueAccent,
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                        context,
+                        MaterialPageRoute(
                             builder: (context) => DetailController(
-                              idMeal: '${widget.seafood[index].idMeal}',
-                              strMeal: '${widget.seafood[index].strMeal}',
-                              strMealThumbURL:
-                                  '${widget.seafood[index].strMealThumb}',
-                              strMealThumb: Image.network(
-                                  '${widget.seafood[index].strMealThumb}',
-                                  fit: BoxFit.cover),
-                            ),
-                          ));
+                                  idMeal: '${widget.dessert[index].idMeal}',
+                                  strMeal: '${widget.dessert[index].strMeal}',
+                                  strMealThumbURL:
+                                      '${widget.dessert[index].strMealThumb}',
+                                  strMealThumb: Image.network(
+                                      '${widget.dessert[index].strMealThumb}',
+                                      fit: BoxFit.cover),
+                                )),
+                      );
                     },
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +101,7 @@ class _SeafoodViewState extends State<SeafoodView> {
                           Align(
                               alignment: Alignment(0, 0),
                               child: Image.network(
-                                  '${widget.seafood[index].strMealThumb}',
+                                  '${widget.dessert[index].strMealThumb}',
                                   fit: BoxFit.cover))
                         ]),
                   ),

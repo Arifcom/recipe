@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:recipe/modules/controllers/detail_controller.dart';
+import 'package:recipe/modules/controllers/search_controller.dart';
 import 'package:recipe/modules/models/dessert_model.dart';
 import 'package:recipe/config.dart';
 
@@ -21,6 +22,7 @@ class _DessertViewState extends State<DessertView> {
 
   Widget app_bar_title = new Text(Config.app_string + ' Dessert');
   Icon action_icon = new Icon(Icons.search);
+  final t_f_search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,15 @@ class _DessertViewState extends State<DessertView> {
                                 new Icon(Icons.search, color: Colors.white),
                             hintText: "Search...",
                             hintStyle: new TextStyle(color: Colors.white)),
+                        onEditingComplete: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchController(
+                                  query: t_f_search.text
+                                )),
+                          );
+                        },
                       );
                     } else {
                       this.action_icon = new Icon(Icons.search);

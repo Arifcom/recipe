@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:recipe/modules/controllers/dessert_controller.dart';
 import 'package:recipe/modules/controllers/favorite_controller.dart';
 import 'package:recipe/modules/views/seafood_view.dart';
+import 'package:recipe/modules/api/seafood_api.dart';
 
 import 'package:recipe/config.dart';
 
 class SeafoodController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SeafoodApi da = new SeafoodApi();
     int _selectedIndex = 1;
 
     void _onItemTapped(int index) {
@@ -34,7 +36,17 @@ class SeafoodController extends StatelessWidget {
         appBar: AppBar(
           title: Text(Config.app_string + ' Seafood'),
         ),
-        body: SeafoodView(),
+        body: FutureBuilder(
+          future: da.loadApi(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) print(snapshot.error);
+
+            var data = snapshot.data;
+            return snapshot.hasData
+                ? SeafoodView(data)
+                : Center(child: new CircularProgressIndicator());
+          },
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(

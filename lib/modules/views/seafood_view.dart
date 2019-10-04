@@ -5,36 +5,22 @@ import 'dart:convert';
 import 'package:recipe/end_point.dart';
 import 'package:recipe/modules/controllers/detail_controller.dart';
 import 'package:recipe/modules/models/seafood_model.dart';
+import 'package:recipe/modules/api/seafood_api.dart';
 
 class SeafoodView extends StatefulWidget {
-  SeafoodView({Key key}) : super(key: key);
+  final List<SeafoodModel> seafood;
+
+  SeafoodView(this.seafood, {Key key});
 
   @override
   _SeafoodViewState createState() => _SeafoodViewState();
 }
 
 class _SeafoodViewState extends State<SeafoodView> {
-  List<SeafoodModel> seafood = [];
 
   @override
   void initState() {
     super.initState();
-    loadData();
-  }
-
-  loadData() async {
-    String dataURL = EndPoint.seafood;
-    http.Response response = await http.get(dataURL);
-    var responseJson = json.decode(response.body);
-    if (response.statusCode == 200) {
-      setState(() {
-        seafood = (responseJson['meals'] as List)
-            .map((p) => SeafoodModel.fromJson(p))
-            .toList();
-      });
-    } else {
-      throw Exception('Failed to load photos');
-    }
   }
 
   @override
@@ -43,50 +29,46 @@ class _SeafoodViewState extends State<SeafoodView> {
   }
 
   body() {
-    if (seafood.length == 0) {
-      return new Center(child: new CircularProgressIndicator());
-    } else {
-      return Container(
-        child: GridView.builder(
-            itemCount: seafood.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return Hero(
-                  tag: 'image' + '${seafood[index].idMeal}',
-                  child: Card(
-                    color: Colors.blueAccent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailController(
-                                idMeal: '${seafood[index].idMeal}',
-                                strMeal: '${seafood[index].strMeal}',
-                                strMealThumbURL:
-                                    '${seafood[index].strMealThumb}',
-                                strMealThumb: Image.network(
-                                    '${seafood[index].strMealThumb}',
-                                    fit: BoxFit.cover),
-                              ),
-                            ));
-                      },
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Align(
-                                alignment: Alignment(0, 0),
-                                child: Image.network(
-                                    '${seafood[index].strMealThumb}',
-                                    fit: BoxFit.cover))
-                          ]),
-                    ),
-                  ));
-            }),
-      );
-    }
+    return Container(
+      child: GridView.builder(
+          itemCount: widget.seafood.length == null ? 0 : widget.seafood.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return Hero(
+                tag: 'image' + '${widget.seafood[index].idMeal}',
+                child: Card(
+                  color: Colors.blueAccent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailController(
+                              idMeal: '${widget.seafood[index].idMeal}',
+                              strMeal: '${widget.seafood[index].strMeal}',
+                              strMealThumbURL:
+                              '${widget.seafood[index].strMealThumb}',
+                              strMealThumb: Image.network(
+                                  '${widget.seafood[index].strMealThumb}',
+                                  fit: BoxFit.cover),
+                            ),
+                          ));
+                    },
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Align(
+                              alignment: Alignment(0, 0),
+                              child: Image.network(
+                                  '${widget.seafood[index].strMealThumb}',
+                                  fit: BoxFit.cover))
+                        ]),
+                  ),
+                ));
+          }),
+    );
   }
 }

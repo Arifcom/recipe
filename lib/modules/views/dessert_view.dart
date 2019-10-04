@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:recipe/modules/controllers/detail_controller.dart';
 import 'package:recipe/modules/models/dessert_model.dart';
+import 'package:recipe/config.dart';
 
 class DessertView extends StatefulWidget {
   final List<DessertModel> dessert;
@@ -13,15 +14,45 @@ class DessertView extends StatefulWidget {
 }
 
 class _DessertViewState extends State<DessertView> {
-
   @override
   void initState() {
     super.initState();
   }
 
+  Widget app_bar_title = new Text(Config.app_string + ' Dessert');
+  Icon action_icon = new Icon(Icons.search);
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: body());
+    return new Scaffold(
+        appBar: AppBar(
+            title: app_bar_title,
+            actions: <Widget>[
+              new IconButton(
+                icon: action_icon,
+                onPressed: () {
+                  setState(() {
+                    if (this.action_icon.icon == Icons.search) {
+                      this.action_icon = new Icon(Icons.close);
+                      this.app_bar_title = new TextField(
+                        style: new TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: new InputDecoration(
+                            prefixIcon:
+                                new Icon(Icons.search, color: Colors.white),
+                            hintText: "Search...",
+                            hintStyle: new TextStyle(color: Colors.white)),
+                      );
+                    } else {
+                      this.action_icon = new Icon(Icons.search);
+                      this.app_bar_title = new Text(Config.app_string + ' Dessert');
+                    }
+                  });
+                },
+              ),
+            ]),
+        body: body());
   }
 
   body() {
@@ -42,14 +73,14 @@ class _DessertViewState extends State<DessertView> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => DetailController(
-                              idMeal: '${widget.dessert[index].idMeal}',
-                              strMeal: '${widget.dessert[index].strMeal}',
-                              strMealThumbURL:
-                              '${widget.dessert[index].strMealThumb}',
-                              strMealThumb: Image.network(
-                                  '${widget.dessert[index].strMealThumb}',
-                                  fit: BoxFit.cover),
-                            )),
+                                  idMeal: '${widget.dessert[index].idMeal}',
+                                  strMeal: '${widget.dessert[index].strMeal}',
+                                  strMealThumbURL:
+                                      '${widget.dessert[index].strMealThumb}',
+                                  strMealThumb: Image.network(
+                                      '${widget.dessert[index].strMealThumb}',
+                                      fit: BoxFit.cover),
+                                )),
                       );
                     },
                     child: Column(

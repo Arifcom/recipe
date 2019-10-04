@@ -7,6 +7,8 @@ import 'package:recipe/modules/controllers/detail_controller.dart';
 import 'package:recipe/modules/models/seafood_model.dart';
 import 'package:recipe/modules/api/seafood_api.dart';
 
+import 'package:recipe/config.dart';
+
 class SeafoodView extends StatefulWidget {
   final List<SeafoodModel> seafood;
 
@@ -17,15 +19,45 @@ class SeafoodView extends StatefulWidget {
 }
 
 class _SeafoodViewState extends State<SeafoodView> {
-
   @override
   void initState() {
     super.initState();
   }
 
+  Widget app_bar_title = new Text(Config.app_string + ' Seafood');
+  Icon action_icon = new Icon(Icons.search);
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: body());
+    return new Scaffold(
+        appBar: AppBar(
+            title: app_bar_title,
+            actions: <Widget>[
+              new IconButton(
+                icon: action_icon,
+                onPressed: () {
+                  setState(() {
+                    if (this.action_icon.icon == Icons.search) {
+                      this.action_icon = new Icon(Icons.close);
+                      this.app_bar_title = new TextField(
+                        style: new TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: new InputDecoration(
+                            prefixIcon:
+                            new Icon(Icons.search, color: Colors.white),
+                            hintText: "Search...",
+                            hintStyle: new TextStyle(color: Colors.white)),
+                      );
+                    } else {
+                      this.action_icon = new Icon(Icons.search);
+                      this.app_bar_title = new Text(Config.app_string + ' Seafood');
+                    }
+                  });
+                },
+              ),
+            ]),
+        body: body());
   }
 
   body() {
@@ -49,7 +81,7 @@ class _SeafoodViewState extends State<SeafoodView> {
                               idMeal: '${widget.seafood[index].idMeal}',
                               strMeal: '${widget.seafood[index].strMeal}',
                               strMealThumbURL:
-                              '${widget.seafood[index].strMealThumb}',
+                                  '${widget.seafood[index].strMealThumb}',
                               strMealThumb: Image.network(
                                   '${widget.seafood[index].strMealThumb}',
                                   fit: BoxFit.cover),

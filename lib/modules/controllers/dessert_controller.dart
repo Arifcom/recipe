@@ -5,8 +5,6 @@ import 'package:recipe/modules/controllers/favorite_controller.dart';
 import 'package:recipe/modules/views/dessert_view.dart';
 import 'package:recipe/modules/api/dessert_api.dart';
 
-import 'package:recipe/config.dart';
-
 class DessertController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,9 +31,6 @@ class DessertController extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(Config.app_string + ' Dessert'),
-        ),
         body: FutureBuilder(
           future: da.loadApi(),
           builder: (context, snapshot) {

@@ -62,6 +62,7 @@ class FavoriteController extends StatelessWidget {
           currentIndex: _selectedIndex,
           fixedColor: Colors.blueAccent,
           onTap: _onItemTapped,
+          key: Key('bn2'),
         ));
   }
 }
